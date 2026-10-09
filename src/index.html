@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CYBERTERM // Intelligent Command Center</title>
+  <link rel="stylesheet" href="vendor/xterm.css">
+  <link rel="stylesheet" href="styles/themes.css">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <div id="cyber-app">
+
+    <!-- ==================================================
+         PREMIUM TECHNICAL BOOT SEQUENCE (CINEMATIC YET FAST)
+    ================================================== -->
+    <div id="boot-overlay">
+      <div class="boot-stage-frame">
+        <div class="corner-accent corner-tl"></div>
+        <div class="corner-accent corner-tr"></div>
+        <div class="corner-accent corner-bl"></div>
+        <div class="corner-accent corner-br"></div>
+
+        <div class="boot-brand-header">
+          <div class="boot-top-meta">
+            <span>COMMAND CENTER // CONPTY WIN64</span>
+            <span>BUILD 2.5.0 // INTELLIGENCE ACTIVE</span>
+          </div>
+          <div class="boot-main-title">
+            <span class="boot-title-dot"></span>
+            <span>CYBERTERM</span>
+          </div>
+          <div class="boot-sub-title">ONE INTELLIGENT COMMAND CENTER // SUBSYSTEM INITIALIZATION</div>
+          <div class="boot-activation-line" id="boot-act-line"></div>
+        </div>
+
+        <div class="boot-subsystems-list">
+          <div class="boot-subsystem-row" id="boot-sub-1">
+            <span class="subsystem-name">WINDOWS CONPTY ENGINE</span>
+            <span class="subsystem-dots"></span>
+            <span class="subsystem-tag ready">[ ONLINE ]</span>
+          </div>
+          <div class="boot-subsystem-row" id="boot-sub-2">
+            <span class="subsystem-name">CYBER AI DIAGNOSTIC ENGINE</span>
+            <span class="subsystem-dots"></span>
+            <span class="subsystem-tag ready">[ ARMED ]</span>
+          </div>
+          <div class="boot-subsystem-row" id="boot-sub-3">
+            <span class="subsystem-name">COMMAND RISK ANALYZER</span>
+            <span class="subsystem-dots"></span>
+            <span class="subsystem-tag ready">[ ACTIVE ]</span>
+          </div>
+          <div class="boot-subsystem-row" id="boot-sub-4">
+            <span class="subsystem-name">SESSION TIME MACHINE</span>
+            <span class="subsystem-dots"></span>
+            <span class="subsystem-tag ready">[ RECORDING ]</span>
+          </div>
+          <div class="boot-subsystem-row" id="boot-sub-5">
+            <span class="subsystem-name">PROJECT &amp; GIT RADAR</span>
+            <span class="subsystem-dots"></span>
+            <span class="subsystem-tag ready">[ SYNCED ]</span>
+          </div>
+        </div>
+
+        <div class="boot-operator-console" id="boot-op-console">
+          <div class="corner-accent corner-tl"></div>
+          <div class="corner-accent corner-tr"></div>
+          <div class="corner-accent corner-bl"></div>
+          <div class="corner-accent corner-br"></div>
+          <div class="op-console-header">
+            <span>OPERATOR CONSOLE IDENTIFICATION</span>
+            <span style="color:var(--accent-cyan)">STATUS: VERIFIED</span>
+          </div>
+          <div class="op-console-body">
+            <div class="op-name" id="boot-operator-name">MOTHIKARI DURGA PRASAD</div>
+          </div>
+          <div class="op-console-meta">
+            <span>SESSION: <b style="color:var(--text-white)">LOCAL-01</b></span>
+            <span>HOST: <b id="boot-host-label" style="color:var(--text-white)">LUCIFER</b></span>
+            <span style="color:var(--color-success)">SECURITY: ACTIVE</span>
+          </div>
+        </div>
+
+        <div class="boot-telemetry-snapshot">
+          <div class="snap-card">
+            <span class="snap-label">CPU LOAD</span>
+            <span class="snap-val" id="boot-snap-cpu">--%</span>
+          </div>
+          <div class="snap-card">
+            <span class="snap-label">RAM USED</span>
+            <span class="snap-val" id="boot-snap-ram">-- GB</span>
+          </div>
+          <div class="snap-card">
+            <span class="snap-label">STORAGE</span>
+            <span class="snap-val" id="boot-snap-storage">--% [C:]</span>
+          </div>
+          <div class="snap-card">
+            <span class="snap-label">NETWORK</span>
+            <span class="snap-val" style="color:var(--color-success)" id="boot-snap-net">ONLINE</span>
+          </div>
+        </div>
+
+        <div class="boot-footer-bar">
+          <div class="boot-progress-track">
+            <div class="boot-progress-thumb" id="boot-progress-fill"></div>
+          </div>
+          <div class="boot-esc-label">
+            <span>● SYSTEM READY</span>
+            <span>[ Press ESC or click to skip ]</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================================================
+         TOP SYSTEM BAR (WINDOW HEADER)
+    ================================================== -->
+    <header id="titlebar">
+      <div class="titlebar-left">
+        <div class="cyber-brand-logo">
+          <span class="brand-dot"></span>
+          <span>CYBERTERM</span>
+        </div>
+        <span class="brand-build">PRO 2.5</span>
+        <div class="badge-online">
+          <span class="online-dot"></span>
+          <span>ONLINE</span>
+        </div>
+      </div>
+
+      <div class="titlebar-center no-drag">
+        <div class="top-meta-pill">
+          <span style="color:var(--text-muted)">WS:</span>
+          <span id="top-workspace-label" style="color:var(--accent-cyan);font-weight:700">DEFAULT</span>
+        </div>
+        <!-- Shell Subsystem Quick Launcher Buttons -->
+        <div class="shell-segmented-group" id="title-shell-group" title="Click to open a new tab with this shell">
+          <button class="shell-segment-btn active" data-shell="powershell" title="New Windows PowerShell tab">PWSH</button>
+          <button class="shell-segment-btn" data-shell="cmd" title="New Command Prompt tab">CMD</button>
+          <button class="shell-segment-btn" data-shell="wsl" title="New WSL 2 Ubuntu Linux tab">WSL (LINUX)</button>
+          <button class="shell-segment-btn" data-shell="gitbash" title="New Git Bash tab">GIT BASH</button>
+        </div>
+        <div class="top-meta-pill">
+          <span style="color:var(--text-muted)">HOST:</span>
+          <span id="top-host-label" style="color:var(--text-white);font-weight:600">LUCIFER</span>
+        </div>
+      </div>
+
+      <div class="titlebar-right no-drag">
+        <div class="top-interactive-pill active" id="btn-toggle-monitor" title="Toggle Cockpit Panel">
+          <span>COCKPIT</span>
+        </div>
+        <button class="win-control-btn pin-btn" id="btn-win-pin" title="Toggle Always on Top">📌</button>
+        <button class="win-control-btn" id="btn-win-min" title="Minimize">─</button>
+        <button class="win-control-btn" id="btn-win-max" title="Maximize">□</button>
+        <button class="win-control-btn close-btn" id="btn-win-close" title="Close">✕</button>
+      </div>
+    </header>
+
+    <!-- ==================================================
+         SYSTEM TELEMETRY STRIP (HORIZONTAL STATUS MODULES)
+    ================================================== -->
+    <section id="sys-info-strip">
+      <div class="strip-item">
+        <span class="strip-label">CPU</span>
+        <span class="strip-val" id="strip-cpu">--%</span>
+        <span class="strip-label" id="strip-cpu-cores">[16 CORES]</span>
+      </div>
+      <span class="strip-divider">|</span>
+      <div class="strip-item">
+        <span class="strip-label">MEMORY</span>
+        <span class="strip-val" id="strip-ram">-- / -- GB</span>
+        <span class="strip-label" id="strip-ram-percent">[--%]</span>
+      </div>
+      <span class="strip-divider">|</span>
+      <div class="strip-item">
+        <span class="strip-label">STORAGE</span>
+        <span class="strip-val" id="strip-storage">-- / -- GB</span>
+        <span class="strip-label" id="strip-storage-percent">[--%]</span>
+      </div>
+      <span class="strip-divider">|</span>
+      <div class="strip-item">
+        <span class="strip-label">NETWORK</span>
+        <span class="strip-val accent" id="strip-net">ONLINE</span>
+        <span class="strip-label" id="strip-net-ip">[10.196.52.82]</span>
+      </div>
+      <span class="strip-divider">|</span>
+      <div class="strip-item">
+        <span class="strip-label">UPTIME</span>
+        <span class="strip-val" id="strip-uptime">00:00:00</span>
+      </div>
+    </section>
+
+    <!-- ==================================================
+         MAIN WORKSPACE (TERMINAL TABS + DEVELOPMENT COCKPIT)
+    ================================================== -->
+    <div id="main-workspace">
+
+      <!-- LEFT: REAL CONPTY TERMINAL WORKSPACE -->
+      <section id="terminal-container">
+        
+        <!-- Tab Bar & Toolbar -->
+        <div class="terminal-tabbar-strip">
+          <div class="terminal-tabs-scroll" id="terminal-tabs-strip">
+            <!-- Dynamically populated tab buttons -->
+          </div>
+          <div class="terminal-tab-actions">
+            <button class="tab-action-btn" id="btn-new-tab" title="New Tab (Ctrl+T)">＋</button>
+            <button class="tab-action-btn" id="btn-split-term" title="Split Pane (Ctrl+\)">◫</button>
+            <button class="tab-action-btn" id="btn-manage-workspaces" title="Manage Workspaces" onclick="window.commandPalette.executeWorkspaceAction()">🗂</button>
+            <button class="tab-action-btn" id="btn-open-settings" title="Settings (Ctrl+,)">⚙</button>
+          </div>
+        </div>
+
+        <!-- Terminal Sub-Header Info -->
+        <div class="terminal-header-strip">
+          <div class="term-header-left">
+            <span>ACTIVE SUBSYSTEM</span>
+            <span>//</span>
+            <span id="term-header-shell" style="color:var(--accent-cyan);font-weight:700">POWERSHELL</span>
+            <span>//</span>
+            <span id="term-header-env" style="color:var(--text-dim)">WIN64</span>
+          </div>
+          <div class="term-header-right">
+            <span class="term-shortcut-badge" title="Command Palette">Ctrl+Shift+P</span>
+            <div class="term-badge-active">
+              <span class="online-dot"></span>
+              <span id="term-status-badge">CONPTY ACTIVE</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project Intelligence Banner (Auto-detects Python, Node, Git, Rust, etc.) -->
+        <div id="project-detect-banner" class="project-detect-banner" style="display:none;"></div>
+
+        <!-- Panes Viewport (Holds XTerm Instances for each Tab/Split) -->
+        <div class="terminal-panes-viewport" id="terminal-panes-container">
+          <!-- Dynamically populated tab panes -->
+        </div>
+
+      </section>
+
+      <!-- RIGHT: DEVELOPMENT COCKPIT PANEL -->
+      <aside id="system-monitor-panel">
+        
+        <!-- Cockpit Navigation Tab Bar -->
+        <div class="cockpit-nav-bar">
+          <button class="cockpit-nav-tab active" data-tab="ai" title="Cyber AI Copilot &amp; Diagnostics">AI COPILOT</button>
+          <button class="cockpit-nav-tab" data-tab="radar" title="Live Process Radar">RADAR</button>
+          <button class="cockpit-nav-tab" data-tab="git" title="Git Intelligence">GIT</button>
+          <button class="cockpit-nav-tab" data-tab="files" title="Smart File Navigator">FILES</button>
+          <button class="cockpit-nav-tab" data-tab="timeline" title="Session Time Machine">TIMELINE</button>
+          <button class="cockpit-nav-tab" data-tab="monitor" title="Hardware Telemetry">MONITOR</button>
+          <button class="btn-collapse-monitor" id="btn-collapse-monitor" title="Collapse Panel">[ &gt; ]</button>
+        </div>
+
+        <div class="monitor-sections-body">
+          
+          <!-- ==============================================
+               SECTION 1: CYBER AI COPILOT
+          ============================================== -->
+          <div class="cockpit-section active" id="cockpit-sec-ai">
+            
+            <!-- Dynamic Error Diagnostic Card -->
+            <div id="ai-diagnostic-card" class="ai-diagnostic-card" style="display:none;"></div>
+
+            <!-- Natural Language Command Builder -->
+            <div class="tech-module">
+              <div class="corner-accent corner-tl"></div>
+              <div class="corner-accent corner-tr"></div>
+              <div class="mod-header">
+                <span>NATURAL LANGUAGE COMMAND BUILDER</span>
+                <span style="color:var(--accent-cyan)">AI COPILOT</span>
+              </div>
+              <div class="cockpit-input-wrap">
+                <input type="text" id="ai-nl-input" class="cockpit-input" placeholder="e.g. find all python files, kill port 8080..." />
+                <button id="ai-nl-btn" class="cockpit-btn">GENERATE</button>
+              </div>
+              <div id="ai-nl-results"></div>
+            </div>
+
+            <!-- Universal Command Translator -->
+            <div class="tech-module">
+              <div class="corner-accent corner-tl"></div>
+              <div class="corner-accent corner-tr"></div>
+              <div class="mod-header">
+                <span>UNIVERSAL COMMAND TRANSLATOR</span>
+                <span style="color:var(--color-success)">CROSS-SHELL</span>
+              </div>
+              <div class="cockpit-input-wrap">
+                <input type="text" id="ai-trans-input" class="cockpit-input" placeholder="e.g. ls -la, cat file, rm -rf..." />
+                <button id="ai-trans-btn" class="cockpit-btn">TRANSLATE</button>
+              </div>
+              <div id="ai-trans-results"></div>
+            </div>
+
+            <!-- Command Explainer -->
+            <div class="tech-module">
+              <div class="corner-accent corner-tl"></div>
+              <div class="corner-accent corner-tr"></div>
+              <div class="mod-header">
+                <span>COMMAND EXPLAINER</span>
+                <span style="color:var(--accent-primary)">SYNTAX BREAKDOWN</span>
+              </div>
+              <div class="cockpit-input-wrap">
+                <input type="text" id="ai-exp-input" class="cockpit-input" placeholder="e.g. git reset --soft HEAD~1..." />
+                <button id="ai-exp-btn" class="cockpit-btn">EXPLAIN</button>
+              </div>
+              <div id="ai-exp-results"></div>
+            </div>
+
+          </div>
+
+          <!-- ==============================================
+               SECTION 2: PROCESS RADAR
+          ============================================== -->
+          <div class="cockpit-section" id="cockpit-sec-radar">
+            
+            <div class="tech-module">
+              <div class="mod-header">
+                <span>TERMINAL PROCESS TREES</span>
+                <span style="color:var(--color-success)">ACTIVE SESSIONS</span>
+              </div>
+              <div id="radar-terminal-list" class="radar-list-box"></div>
+            </div>
+
+            <div class="tech-module">
+              <div class="mod-header">
+                <span>TOP SYSTEM PROCESSES</span>
+                <button class="cockpit-mini-btn" onclick="window.cockpitController.refreshRadar()">REFRESH</button>
+              </div>
+              <div id="radar-system-list" class="radar-list-box"></div>
+            </div>
+
+          </div>
+
+          <!-- ==============================================
+               SECTION 3: GIT INTELLIGENCE
+          ============================================== -->
+          <div class="cockpit-section" id="cockpit-sec-git">
+            <div id="git-status-content" class="git-view-box"></div>
+          </div>
+
+          <!-- ==============================================
+               SECTION 4: SMART FILE NAVIGATOR
+          ============================================== -->
+          <div class="cockpit-section" id="cockpit-sec-files">
+            <div class="files-nav-header">
+              <button id="files-up-btn" class="cockpit-mini-btn">⬆ UP</button>
+              <span id="files-cwd-label" class="files-cwd-text">~</span>
+            </div>
+            <div id="files-list-content" class="files-list-box"></div>
+          </div>
+
+          <!-- ==============================================
+               SECTION 5: SESSION TIME MACHINE
+          ============================================== -->
+          <div class="cockpit-section" id="cockpit-sec-timeline">
+            <div class="timeline-controls-bar">
+              <input type="text" id="timeline-search-input" class="cockpit-input" placeholder="Search command history or output..." />
+              <div class="timeline-filters-row">
+                <select id="timeline-shell-filter" class="cockpit-select">
+                  <option value="ALL">All Shells</option>
+                  <option value="powershell">PowerShell</option>
+                  <option value="cmd">CMD</option>
+                  <option value="wsl">WSL</option>
+                  <option value="gitbash">Git Bash</option>
+                </select>
+                <label class="timeline-check-label">
+                  <input type="checkbox" id="timeline-errors-only" /> Errors Only
+                </label>
+              </div>
+            </div>
+            <div id="timeline-list-content" class="timeline-list-box"></div>
+          </div>
+
+          <!-- ==============================================
+               SECTION 6: HARDWARE MONITOR (ORIGINAL TELEMETRY)
+          ============================================== -->
+          <div class="cockpit-section" id="cockpit-sec-monitor">
+            
+            <!-- CPU Load & Real Waveform -->
+            <div class="tech-module">
+              <div class="corner-accent corner-tl"></div>
+              <div class="corner-accent corner-tr"></div>
+              <div class="mod-header">
+                <span>CPU LOAD &amp; CORES</span>
+                <span id="mon-cpu-load-tag" style="color:var(--color-success)">NORMAL</span>
+              </div>
+              <div class="mod-metric-line">
+                <span class="mod-big-num" id="mon-cpu-percent">--%</span>
+                <span class="mod-sub-num" id="mon-cpu-cores-label">16 CORES // AMD RYZEN</span>
+              </div>
+              <div class="cpu-waveform-box">
+                <svg class="cpu-svg" viewBox="0 0 260 44" preserveAspectRatio="none">
+                  <line x1="0" y1="11" x2="260" y2="11" class="cpu-grid-line" />
+                  <line x1="0" y1="22" x2="260" y2="22" class="cpu-grid-line" />
+                  <line x1="0" y1="33" x2="260" y2="33" class="cpu-grid-line" />
+                  <polygon class="cpu-waveform-fill" id="cpu-polygon" points="0,44 260,44" />
+                  <polyline class="cpu-waveform-polyline" id="cpu-polyline" points="0,44 260,44" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Segmented RAM -->
+            <div class="tech-module">
+              <div class="corner-accent corner-tl"></div>
+              <div class="corner-accent corner-tr"></div>
+              <div class="mod-header">
+                <span>SYSTEM MEMORY</span>
+                <span id="mon-ram-percent">--%</span>
+              </div>
+              <div class="mod-metric-line">
+                <span class="mod-big-num" id="mon-ram-used">-- GB</span>
+                <span class="mod-sub-num" id="mon-ram-total">of -- GB</span>
+              </div>
+              <div class="segmented-meter-track" id="ram-segments"></div>
+            </div>
+
+            <!-- Segmented Storage -->
+            <div class="tech-module">
+              <div class="corner-accent corner-tl"></div>
+              <div class="corner-accent corner-tr"></div>
+              <div class="mod-header">
+                <span>DRIVE STORAGE [C:]</span>
+                <span id="mon-storage-percent">--%</span>
+              </div>
+              <div class="mod-metric-line">
+                <span class="mod-big-num" id="mon-storage-used">-- GB</span>
+                <span class="mod-sub-num" id="mon-storage-total">of -- GB</span>
+              </div>
+              <div class="segmented-meter-track" id="storage-segments"></div>
+            </div>
+
+            <!-- Network Status -->
+            <div class="tech-module">
+              <div class="mod-header">
+                <span>NETWORK ADAPTER</span>
+                <span id="mon-net-status" style="color:var(--color-success)">● ONLINE</span>
+              </div>
+              <div class="mod-metric-line">
+                <span class="mod-big-num" id="mon-net-ip" style="font-size:12px;color:var(--accent-cyan)">127.0.0.1</span>
+                <span class="mod-sub-num" id="mon-net-iface">Wi-Fi (IPv4)</span>
+              </div>
+            </div>
+
+            <!-- Operator Identity -->
+            <div class="operator-anchor-box">
+              <div class="corner-accent corner-tl"></div>
+              <div class="corner-accent corner-tr"></div>
+              <div class="corner-accent corner-bl"></div>
+              <div class="corner-accent corner-br"></div>
+              <div class="op-anchor-header">
+                <span>OPERATOR IDENTITY</span>
+                <span style="color:var(--color-success)">VERIFIED</span>
+              </div>
+              <div class="op-anchor-name" id="mon-identity-name">
+                MOTHIKARI DURGA PRASAD
+              </div>
+              <div class="op-anchor-meta">
+                <span>HOST: <b id="mon-identity-host" style="color:var(--text-white)">LUCIFER</b></span>
+                <span>SESSION: <b style="color:var(--accent-primary)">LOCAL-01</b></span>
+              </div>
+            </div>
+
+            <!-- Real System Events -->
+            <div class="tech-module">
+              <div class="mod-header">
+                <span>SYSTEM EVENTS</span>
+                <span style="color:var(--text-ghost)">ACTIVITY LOG</span>
+              </div>
+              <div class="events-stream-list" id="events-list"></div>
+            </div>
+
+          </div>
+
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- ==================================================
+         BOTTOM STATUS BAR
+    ================================================== -->
+    <footer id="statusbar">
+      <div class="status-left">
+        <span>STATUS: <b style="color:var(--color-success)">COMMAND CENTER OPERATIONAL</b></span>
+        <span class="status-divider">|</span>
+        <span>AI: <b style="color:var(--accent-cyan)">ARMED</b></span>
+        <span class="status-divider">|</span>
+        <span>RISK SHIELD: <b style="color:var(--color-success)">ACTIVE</b></span>
+        <span class="status-divider">|</span>
+        <span>ENCODING: <b style="color:var(--text-white)">UTF-8</b></span>
+        <span class="status-divider">|</span>
+        <span>PALETTE: <b style="color:var(--accent-cyan)">Ctrl+Shift+P</b></span>
+      </div>
+
+      <div class="status-right">
+        <span id="status-clock" style="color:var(--text-white);font-weight:600">00:00:00</span>
+        <span class="status-divider">|</span>
+        <span id="status-date">15 SEP 2026</span>
+      </div>
+    </footer>
+
+    <!-- ==================================================
+         COMMAND RISK ANALYZER CONFIRMATION MODAL
+    ================================================== -->
+    <div id="risk-confirm-modal" class="settings-modal-overlay hidden">
+      <div class="settings-dialog risk-dialog">
+        <div class="corner-accent corner-tl"></div>
+        <div class="corner-accent corner-tr"></div>
+        <div class="corner-accent corner-bl"></div>
+        <div class="corner-accent corner-br"></div>
+        
+        <div class="settings-header">
+          <div class="settings-title-wrap">
+            <span class="settings-title" style="color:var(--color-error)">⚠ COMMAND RISK SHIELD</span>
+            <span class="settings-sub">ELEVATED OR DESTRUCTIVE COMMAND DETECTED</span>
+          </div>
+          <span id="risk-modal-level" class="risk-badge risk-critical">CRITICAL</span>
+        </div>
+
+        <div class="settings-body">
+          <div class="risk-code-box">
+            <code id="risk-modal-cmd">rm -rf /</code>
+          </div>
+          <div class="risk-info-row">
+            <b>Warning:</b> <span id="risk-modal-reason">Permanent system-level data loss.</span>
+          </div>
+          <div class="risk-info-row">
+            <b>Target:</b> <span id="risk-modal-target">Root Filesystem</span>
+          </div>
+          <div class="risk-actions-row">
+            <button id="risk-modal-cancel" class="ai-action-btn" style="flex:1;">CANCEL COMMAND</button>
+            <button id="risk-modal-execute" class="ai-action-btn run-btn danger-btn" style="flex:1;">CONFIRM &amp; EXECUTE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================================================
+         COMMAND PALETTE OVERLAY (Ctrl+Shift+P / F1)
+    ================================================== -->
+    <div id="command-palette-overlay" class="palette-modal-overlay">
+      <div class="palette-dialog">
+        <div class="corner-accent corner-tl"></div>
+        <div class="corner-accent corner-tr"></div>
+        <div class="corner-accent corner-bl"></div>
+        <div class="corner-accent corner-br"></div>
+        <div class="palette-input-wrap">
+          <span class="palette-search-icon">&gt;</span>
+          <input type="text" id="palette-input" placeholder="Type a command, shell, workspace, or action..." autocomplete="off" spellcheck="false" />
+          <span class="palette-esc-hint">ESC</span>
+        </div>
+        <div id="palette-list" class="palette-results-list"></div>
+      </div>
+    </div>
+
+    <!-- ==================================================
+         SETTINGS MODAL (Ctrl+,)
+    ================================================== -->
+    <div id="settings-modal" class="settings-modal-overlay hidden">
+      <div class="settings-dialog">
+        <div class="corner-accent corner-tl"></div>
+        <div class="corner-accent corner-tr"></div>
+        <div class="corner-accent corner-bl"></div>
+        <div class="corner-accent corner-br"></div>
+        
+        <div class="settings-header">
+          <div class="settings-title-wrap">
+            <span class="settings-title">CYBERTERM PREFERENCES</span>
+            <span class="settings-sub">CONFIGURATION, AI INTEGRATION &amp; SECURITY</span>
+          </div>
+          <button class="settings-close-btn" onclick="window.terminalManager.toggleSettingsModal()">✕</button>
+        </div>
+
+        <div class="settings-body">
+          
+          <div class="setting-row">
+            <div class="setting-meta">
+              <label for="setting-theme">Color Theme</label>
+              <span>Color scheme applied across all terminal windows and HUD</span>
+            </div>
+            <select id="setting-theme" onchange="window.settingsManager.set('theme', this.value)">
+              <option value="cyber-blue">Cyber Blue (Default)</option>
+              <option value="matrix-green">Matrix Green</option>
+              <option value="amber-terminal">Amber Terminal</option>
+              <option value="midnight-purple">Midnight Purple</option>
+              <option value="red-alert">Red Alert</option>
+              <option value="minimal-dark">Minimal Dark</option>
+            </select>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-meta">
+              <label for="setting-default-shell">Default Startup Shell</label>
+              <span>Subsystem opened automatically on launch and for new tabs</span>
+            </div>
+            <select id="setting-default-shell" onchange="window.settingsManager.set('defaultShell', this.value)">
+              <option value="powershell">Windows PowerShell</option>
+              <option value="cmd">Command Prompt (CMD)</option>
+              <option value="wsl">WSL 2 (Ubuntu Linux)</option>
+              <option value="gitbash">Git Bash (MINGW64)</option>
+            </select>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-meta">
+              <label for="setting-ai-provider">Cyber AI Provider</label>
+              <span>Engine used for diagnostics, NL builder, and assistance</span>
+            </div>
+            <select id="setting-ai-provider" onchange="window.settingsManager.set('aiProvider', this.value)">
+              <option value="offline">Offline Expert Engine (Fast &amp; Private)</option>
+              <option value="gemini">Google Gemini API</option>
+              <option value="ollama">Local Ollama (http://localhost:11434)</option>
+            </select>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-meta">
+              <label for="setting-ai-key">AI API Key (Optional)</label>
+              <span>Google Gemini API Key for online intelligence</span>
+            </div>
+            <input type="password" id="setting-ai-key" placeholder="AIzaSy..." onchange="window.settingsManager.set('aiApiKey', this.value)" />
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-meta">
+              <label for="setting-risk-warnings">Command Risk Shield</label>
+              <span>Warn and require confirmation before executing destructive commands</span>
+            </div>
+            <input type="checkbox" id="setting-risk-warnings" checked onchange="window.settingsManager.set('riskWarnings', this.checked)" />
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-meta">
+              <label for="setting-font-size">Font Size (px)</label>
+              <span>Terminal monospace font rendering size</span>
+            </div>
+            <input type="number" id="setting-font-size" min="10" max="26" step="1" onchange="window.settingsManager.set('fontSize', parseInt(this.value, 10))" />
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-meta">
+              <label for="setting-cursor-style">Cursor Style</label>
+              <span>Visual cursor shape inside the terminal viewport</span>
+            </div>
+            <select id="setting-cursor-style" onchange="window.settingsManager.set('cursorStyle', this.value)">
+              <option value="block">Block</option>
+              <option value="underline">Underline</option>
+              <option value="bar">Vertical Bar</option>
+            </select>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-meta">
+              <label for="setting-cursor-blink">Cursor Blink</label>
+              <span>Enable blinking animation for terminal cursor</span>
+            </div>
+            <input type="checkbox" id="setting-cursor-blink" onchange="window.settingsManager.set('cursorBlink', this.checked)" />
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-meta">
+              <label for="setting-scrollback">Scrollback Buffer (Lines)</label>
+              <span>Maximum terminal history retained in memory per session</span>
+            </div>
+            <input type="number" id="setting-scrollback" min="1000" max="50000" step="1000" onchange="window.settingsManager.set('scrollback', parseInt(this.value, 10))" />
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-meta">
+              <label for="setting-opacity">Window Transparency</label>
+              <span>Window opacity (0.4 to 1.0)</span>
+            </div>
+            <input type="range" id="setting-opacity" min="0.4" max="1.0" step="0.05" oninput="window.settingsManager.set('windowOpacity', parseFloat(this.value))" />
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-meta">
+              <label for="setting-scanlines">CRT Scanline Texture</label>
+              <span>Subtle retro cyber scanline overlay effect</span>
+            </div>
+            <input type="checkbox" id="setting-scanlines" onchange="window.settingsManager.set('scanlines', this.checked)" />
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-meta">
+              <label for="setting-boot-seq">Futuristic Boot Sequence</label>
+              <span>Show initialization sequence on launch (press ESC to skip)</span>
+            </div>
+            <input type="checkbox" id="setting-boot-seq" onchange="window.settingsManager.set('bootSeqEnabled', this.checked)" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================================================
+         TERMINAL RIGHT-CLICK CONTEXT MENU
+    ================================================== -->
+    <div id="terminal-context-menu" class="cyber-context-menu">
+      <div class="ctx-item" id="ctx-copy">Copy <span class="ctx-shortcut">Ctrl+Shift+C</span></div>
+      <div class="ctx-item" id="ctx-paste">Paste <span class="ctx-shortcut">Ctrl+Shift+V</span></div>
+      <div class="ctx-divider"></div>
+      <div class="ctx-item" id="ctx-split">Split Terminal <span class="ctx-shortcut">Ctrl+\</span></div>
+      <div class="ctx-item" id="ctx-clear">Clear Screen <span class="ctx-shortcut">Ctrl+L</span></div>
+      <div class="ctx-divider"></div>
+      <div class="ctx-item" id="ctx-restart">Restart Subsystem</div>
+    </div>
+
+  </div>
+
+  <!-- Vendor Scripts -->
+  <script src="vendor/xterm.js"></script>
+  <script src="vendor/addon-fit.js"></script>
+  <script src="vendor/addon-web-links.js"></script>
+
+  <!-- CyberTerm Application Scripts -->
+  <script src="js/settings.js"></script>
+  <script src="js/cyber-ai.js"></script>
+  <script src="js/timeline.js"></script>
+  <script src="js/workspaces.js"></script>
+  <script src="js/cockpit.js"></script>
+  <script src="js/terminal-session.js"></script>
+  <script src="js/terminal-manager.js"></script>
+  <script src="js/command-palette.js"></script>
+  <script src="js/hud.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      window.settingsManager = new SettingsManager();
+      window.cyberAI = new CyberAI();
+      window.sessionTimeMachine = new SessionTimeMachine();
+      window.workspaceManager = new WorkspaceManager();
+      window.cockpitController = new CockpitController();
+      window.hudController = new HudController();
+      window.terminalManager = new TerminalManager();
+      window.commandPalette = new CommandPalette();
+      
+      // Initial UI updates
+      window.workspaceManager.updateUI();
+    });
+  </script>
+</body>
+</html>

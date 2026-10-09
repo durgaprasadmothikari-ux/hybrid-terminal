@@ -1,0 +1,146 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+PANDASAY — A tiny terminal panda that speaks.
+Real Linux utility for WSL & Ubuntu terminals.
+"""
+
+import sys
+import os
+import unicodedata
+
+VERSION = "1.0.0"
+
+USAGE_HELP = """PANDASAY
+
+A tiny terminal panda that speaks.
+
+Usage:
+  pandasay "message"
+
+Options:
+  -h, --help     Show help
+  -v, --version  Show version
+
+Examples:
+  pandasay "Hello World"
+  pandasay "CyberTerm is online"
+"""
+
+NO_ARG_USAGE = """Usage:
+  pandasay "your message"
+
+Examples:
+  pandasay "Hello World"
+  pandasay "Welcome to CyberTerm"
+"""
+
+PANDA_ART = r"""       \
+        \
+          ʕ•ᴥ•ʔ
+         /|     |\
+        /_|_____|_\
+          /     \
+         /       \
+"""
+
+def char_width(ch):
+    """Calculate terminal cell display width of a Unicode character."""
+    code = ord(ch)
+    # Combining characters / zero-width
+    if unicodedata.category(ch).startswith('M') or code in (0x200B, 0x200C, 0x200D, 0xFEFF):
+        return 0
+    # East Asian Wide or Fullwidth
+    ea = unicodedata.east_asian_width(ch)
+    if ea in ('W', 'F'):
+        return 2
+    # Common terminal emojis
+    if (0x1F300 <= code <= 0x1FAFF) or (0x2600 <= code <= 0x27BF):
+        return 2
+    return 1
+
+def str_display_width(s):
+    """Calculate the visual column width of a string in a monospace terminal."""
+    return sum(char_width(ch) for ch in s)
+
+def pad_to_width(s, target_width):
+    """Pad string with spaces on the right to match target visual column width."""
+    curr = str_display_width(s)
+    if curr < target_width:
+        return s + (' ' * (target_width - curr))
+    return s
+
+def wrap_text(text, max_col_width=50):
+    """Wrap paragraphs while respecting visual widths and existing newlines."""
+    lines = []
+    for raw_line in text.splitlines():
+        raw_line = raw_line.rstrip('\r\n')
+        if not raw_line:
+            lines.append("")
+            continue
+
+        words = raw_line.split(' ')
+        current_line = []
+        current_len = 0
+
+        for word in words:
+            word_len = str_display_width(word)
+            if not current_line:
+                current_line.append(word)
+                current_len = word_len
+            elif current_len + 1 + word_len <= max_col_width:
+                current_line.append(word)
+                current_len += 1 + word_len
+            else:
+                lines.append(" ".join(current_line))
+                current_line = [word]
+                current_len = word_len
+        if current_line:
+            lines.append(" ".join(current_line))
+
+    return lines if lines else [""]
+
+def render_bubble(lines):
+    """Render speech bubble with borders and panda ASCII character."""
+    max_len = max((str_display_width(l) for l in lines), default=0)
+    width = max(max_len, 4)
+
+    top_border = " " + "_" * (width + 2)
+    bottom_border = " " + "-" * (width + 2)
+
+    bubble_lines = [top_border]
+    for line in lines:
+        padded = pad_to_width(line, width)
+        bubble_lines.append(f"< {padded} >")
+    bubble_lines.append(bottom_border)
+
+    bubble = "\n".join(bubble_lines)
+    return bubble + "\n" + PANDA_ART
+
+def main():
+    args = sys.argv[1:]
+
+    if args:
+        if args[0] in ('-h', '--help'):
+            print(USAGE_HELP.strip())
+            sys.exit(0)
+        if args[0] in ('-v', '--version'):
+            print(f"pandasay {VERSION}")
+            sys.exit(0)
+        message = " ".join(args)
+    else:
+        if not sys.stdin.isatty():
+            message = sys.stdin.read().rstrip('\r\n')
+            if not message:
+                sys.exit(0)
+        else:
+            print(NO_ARG_USAGE.strip(), file=sys.stderr)
+            sys.exit(1)
+
+    wrapped_lines = wrap_text(message, max_col_width=50)
+    output = render_bubble(wrapped_lines)
+    print(output)
+    sys.exit(0)
+
+if __name__ == '__main__':
+    main()
